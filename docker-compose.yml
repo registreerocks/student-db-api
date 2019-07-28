@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  student-db-api:
+    image: registree/student-db-api:latest
+    ports:
+      - "8002:8000"
+    environment:
+      AUTH0_DOMAIN: "registree.eu.auth0.com"
+      API_IDENTIFIER: "https://registree.rocks/apis"
+      ALGORITHMS: "['RS256']"
+      UPORT_ISSUER: "2ow5YgWEjhL1MGjk1Ze1z5znfrNnW3EjWtC"
+      UPORT_VALIDATION_URL: "http://178.62.244.76:8080/validateJWT"
+    depends_on:
+      - mongodb
+    networks:
+      - backbone
+      - apiaggregator_interconnector
+
+  mongodb:
+    image: mongo:3.6
+    command: mongod
+    networks:
+      - backbone
+    volumes:
+      - ./mongodata:/data/db
+
+networks: 
+  backbone:
+    driver: bridge
+  apiaggregator_interconnector:
+    external: true

@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  student-db-api:
+    build:
+      context: .
+      dockerfile: Dockerfile_dev
+    ports:
+      - "8000:5000"
+    environment:
+      AUTH0_DOMAIN: "registree.eu.auth0.com"
+      API_IDENTIFIER: "https://registree.rocks/apis"
+      ALGORITHMS: "['RS256']"
+      UPORT_ISSUER: "2ow5YgWEjhL1MGjk1Ze1z5znfrNnW3EjWtC"
+      UPORT_VALIDATION_URL: "http://178.62.244.76:8080/validateJWT"
+    depends_on:
+      - mongodb
+    networks:
+      - backbone
+
+  mongodb:
+    image: mongo:3.6
+    command: mongod
+    ports:
+      - 27017:27017
+    networks:
+      - backbone
+
+networks: 
+  backbone:
+    driver: bridge
