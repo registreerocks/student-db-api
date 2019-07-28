@@ -1,5 +1,5 @@
 from pymongo import MongoClient
 
-MC = MongoClient('mongodb', 27017)
-MDB = MC.data
-MDBC = MDB.student_data
+CLIENT = MongoClient('mongodb://mongodb:27017/')
+DB = CLIENT.database
+MDBC = DB.student_db
