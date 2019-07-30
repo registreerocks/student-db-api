@@ -1,6 +1,6 @@
 from .authentication import requires_auth, requires_scope
 from .creation_functions import _component_weighting_equal_one, _create
-from .getter_functions import (_get_all_assets, _get_asset_by_id,
+from .getter_functions import (_get_assets_by_type, _get_asset_by_id,
                                _get_assets_by_key,
                                _get_children, _get_course_marks_by_lecturer,
                                _get_marks_by_student)
@@ -64,22 +64,22 @@ def create_degree_average(body):
 @requires_auth
 @requires_scope('registree', 'recruiter')
 def get_all_universities(meta_flag):
-    return _get_all_assets('university', meta_flag)
+    return _get_assets_by_type('university', meta_flag)
 
 @requires_auth
 @requires_scope('admin', 'registree', 'recruiter')
 def get_all_faculties(meta_flag):
-    return _get_all_assets('faculty', meta_flag)
+    return _get_assets_by_type('faculty', meta_flag)
 
 @requires_auth
 @requires_scope('admin', 'registree', 'recruiter')
 def get_all_degrees(meta_flag):
-    return _get_all_assets('degree', meta_flag)
+    return _get_assets_by_type('degree', meta_flag)
 
 @requires_auth
 @requires_scope('admin', 'registree', 'recruiter')
 def get_all_courses(meta_flag):
-    return _get_all_assets('course', meta_flag)
+    return _get_assets_by_type('course', meta_flag)
 
 @requires_auth
 @requires_scope('admin', 'lecturer', 'student', 'registree')
@@ -137,17 +137,17 @@ def get_marks_by_student(student_address):
 @requires_auth
 @requires_scope('admin', 'registree', 'recruiter')
 def university_get_faculties(id, meta_flag):
-    return _get_all_assets('faculty', meta_flag)
+    return _get_assets_by_type('faculty', meta_flag)
 
 @requires_auth
 @requires_scope('admin', 'registree', 'recruiter')
 def university_get_degrees(id, meta_flag):
-    return _get_all_assets('degree', meta_flag)
+    return _get_assets_by_type('degree', meta_flag)
 
 @requires_auth
 @requires_scope('admin', 'registree', 'recruiter')
 def university_get_courses(id, meta_flag):
-    return _get_all_assets('course', meta_flag)
+    return _get_assets_by_type('course', meta_flag)
 
 # TODO: update
 # @requires_auth
