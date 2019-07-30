@@ -2,7 +2,8 @@ from .authentication import requires_auth, requires_scope
 from .creation_functions import _component_weighting_equal_one, _create
 from .getter_functions import (_get_assets_by_type, _get_asset_by_id,
                                _get_assets_by_key,
-                               _get_children, _get_course_marks_by_lecturer,
+                               _get_children, 
+                            #    _get_course_marks_by_lecturer,
                                _get_marks_by_student)
 from .querying_functions import _get_top_x, _get_top_x_percent
 # from .update_functions import (_append_children, _course_add_requisite,
