@@ -14,39 +14,39 @@ from .querying_functions import _get_top_x, _get_top_x_percent
 
 
 @requires_auth
-@requires_scope('registree')
+@requires_scope('admin')
 def create_university(body):
     return _create(body.get('asset'), body.get('metadata'))
 
 @requires_auth
-@requires_scope('admin', 'registree')
+@requires_scope('admin')
 def create_faculty(body):
     return _create(body.get('asset'), body.get('metadata'))
 
 @requires_auth
-@requires_scope('admin', 'registree')
+@requires_scope('admin')
 def create_degree(body):
     return _create(body.get('asset'), body.get('metadata'))
 
 @requires_auth
-@requires_scope('admin', 'registree')
+@requires_scope('admin')
 def create_course(body):
     if not _component_weighting_equal_one(body.get('metadata')):
         return {'ERROR': 'Course component weights do not sum up to one.'}, 409
     return _create(body.get('asset'), body.get('metadata'))
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'registree')
+@requires_scope('admin', 'lecturer')
 def create_mark(body):
     return _create(body.get('asset'), body.get('metadata'))
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'registree')
+@requires_scope('admin', 'lecturer')
 def create_course_average(body):
     return _create(body.get('asset'), body.get('metadata'))
 
 @requires_auth
-@requires_scope('admin', 'registree')
+@requires_scope('admin')
 def create_degree_average(body):
     return _create(body.get('asset'), body.get('metadata'))
 
@@ -63,27 +63,27 @@ def create_degree_average(body):
 #     return _delete_child(body.get('degree_id'), body.get('course_id'), 'course', ADMIN)
 
 @requires_auth
-@requires_scope('registree', 'recruiter')
+@requires_scope('admin', 'recruiter')
 def get_all_universities(meta_flag):
     return _get_assets_by_type('university', meta_flag)
 
 @requires_auth
-@requires_scope('admin', 'registree', 'recruiter')
+@requires_scope('admin', 'recruiter')
 def get_all_faculties(meta_flag):
     return _get_assets_by_type('faculty', meta_flag)
 
 @requires_auth
-@requires_scope('admin', 'registree', 'recruiter')
+@requires_scope('admin', 'recruiter')
 def get_all_degrees(meta_flag):
     return _get_assets_by_type('degree', meta_flag)
 
 @requires_auth
-@requires_scope('admin', 'registree', 'recruiter')
+@requires_scope('admin', 'recruiter')
 def get_all_courses(meta_flag):
     return _get_assets_by_type('course', meta_flag)
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'student', 'registree')
+@requires_scope('admin', 'lecturer', 'student')
 def get_marks_by_student(student_address):
     return  _get_marks_by_student(student_address)
 
@@ -136,17 +136,17 @@ def get_marks_by_student(student_address):
 #     return _update_metadata_component('mark', body.get('mark_id'), body.get('mark'), ADMIN)
 
 @requires_auth
-@requires_scope('admin', 'registree', 'recruiter')
+@requires_scope('admin', 'recruiter')
 def university_get_faculties(id, meta_flag):
     return _get_assets_by_type('faculty', meta_flag)
 
 @requires_auth
-@requires_scope('admin', 'registree', 'recruiter')
+@requires_scope('admin', 'recruiter')
 def university_get_degrees(id, meta_flag):
     return _get_assets_by_type('degree', meta_flag)
 
 @requires_auth
-@requires_scope('admin', 'registree', 'recruiter')
+@requires_scope('admin', 'recruiter')
 def university_get_courses(id, meta_flag):
     return _get_assets_by_type('course', meta_flag)
 
@@ -157,32 +157,32 @@ def university_get_courses(id, meta_flag):
 #     return _get_assets_by_key('course', 'lecturer', lecturer, meta_flag)
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'student', 'registree')
+@requires_scope('admin', 'lecturer', 'student')
 def university_get_by_id(id, meta_flag):
     return _get_asset_by_id(id, meta_flag)
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'student', 'registree')
+@requires_scope('admin', 'lecturer', 'student')
 def faculty_get_by_id(id, meta_flag):
     return _get_asset_by_id(id, meta_flag)
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'student', 'registree')
+@requires_scope('admin', 'lecturer', 'student')
 def degree_get_by_id(id, meta_flag):
     return _get_asset_by_id(id, meta_flag)
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'student', 'registree')
+@requires_scope('admin', 'lecturer', 'student')
 def course_get_by_id(id, meta_flag):
     return _get_asset_by_id(id, meta_flag)
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'student', 'registree')
+@requires_scope('admin', 'lecturer', 'student')
 def get_marks_by_course_id(id):
     return _get_assets_by_key('mark', 'course_id', id, True)
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'student', 'registree')
+@requires_scope('admin', 'lecturer', 'student')
 def degree_get_courses(id, meta_flag):
     return _get_children(id, meta_flag, 'degree', 'course')
 
@@ -211,12 +211,12 @@ def degree_get_courses(id, meta_flag):
 #     return _course_average_update({'data.asset_type':'mark'}, ADMIN)
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'registree', 'recruiter')
+@requires_scope('admin', 'lecturer', 'recruiter')
 def query_course_top_x(x, course_id):
     return _get_top_x(x, 'course', course_id)
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'registree', 'recruiter')
+@requires_scope('admin', 'lecturer', 'recruiter')
 def query_course_top_x_percent(x, course_id):
     return _get_top_x_percent(x, 'course', course_id)
 
@@ -239,17 +239,17 @@ def query_course_top_x_percent(x, course_id):
 #     return _degree_average_update({'data.asset_type':'course_average'}, ADMIN)
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'registree', 'recruiter')
+@requires_scope('admin', 'lecturer', 'recruiter')
 def query_degree_top_x(x, degree_id):
     return _get_top_x(x, 'degree', degree_id)
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'registree', 'recruiter')
+@requires_scope('admin', 'lecturer', 'recruiter')
 def query_degree_top_x_percent(x, degree_id):
     return _get_top_x_percent(x, 'degree', degree_id)
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'student', 'registree')
+@requires_scope('admin', 'lecturer', 'student')
 def faculty_get_degrees(id, meta_flag):
     return _get_children(id, meta_flag, 'faculty', 'degree')
 
