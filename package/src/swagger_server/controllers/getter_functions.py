@@ -6,9 +6,9 @@ from .global_vars import MDBC
 def _get_asset_by_id(asset_id, meta_flag):
     asset = _get_one_asset({'_id': ObjectId(asset_id)})
     if not meta_flag:
-        return {'data': asset.get('asset').get('data'), 'id': asset.get('_id')}
+        return {'data': asset.get('asset').get('data'), '_id': asset.get('_id')}
     else:
-        return {'data': asset.get('asset').get('data'), 'id': asset.get('_id'), 'metadata': asset.get('metadata')}
+        return {'data': asset.get('asset').get('data'), '_id': asset.get('_id'), 'metadata': asset.get('metadata')}
 
 def _get_assets(query_dict, meta_flag):
     files = _get_many_assets(query_dict)
