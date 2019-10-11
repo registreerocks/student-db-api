@@ -854,6 +854,25 @@ paths:
   #       '401':
   #         description: Authentication error
 
+  /query/bulk:
+    post:
+      tags:
+        - query
+      summary: 'returns query results for a list of query details'
+      operationId:  swagger_server.controllers.student_db_API_functions.query_bulk
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Authentication error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryBulk'
+        description: list of query details
+        required: true
+
   /query/course/top_x:
     get:
       tags:
@@ -1425,3 +1444,21 @@ components:
               format: date
       xml:
         name: DegreeAverage
+    QueryBulk:
+      type: object
+      properties:
+        query_list:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              type_id:
+                type: string
+              x:
+                type: integer
+              absolute:
+                type: boolean
+      xml:
+        name: QueryBulk

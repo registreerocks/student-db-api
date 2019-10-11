@@ -5,7 +5,7 @@ from .getter_functions import (_get_assets_by_type, _get_asset_by_id,
                                _get_children, 
                             #    _get_course_marks_by_lecturer,
                                _get_marks_by_student)
-from .querying_functions import _get_top_x, _get_top_x_percent
+from .querying_functions import _get_top_x, _get_top_x_percent, _query_bulk
 # from .update_functions import (_append_children, _course_add_requisite,
 #                                _course_average_update,
 #                                _course_delete_requisite,
@@ -209,6 +209,11 @@ def degree_get_courses(id, meta_flag):
 # @requires_scope('admin', 'lecturer', 'registree')
 # def course_average_update_all(body):
 #     return _course_average_update({'data.asset_type':'mark'}, ADMIN)
+
+@requires_auth
+@requires_scope('admin', 'lecturer', 'recruiter')
+def query_bulk(body):
+    return _query_bulk(body.get('query_list'))
 
 @requires_auth
 @requires_scope('admin', 'lecturer', 'recruiter')

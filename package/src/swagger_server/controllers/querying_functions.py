@@ -2,6 +2,14 @@ import math
 
 from .global_vars import MDBC
 
+def _query_bulk(query_list):
+    responses = {}
+    for i, item in enumerate(query_list):
+        if item.get('absolute'):
+            responses[i] = _get_top_x(item.get('x'), item.get('type'), item.get('type_id'))
+        else:
+            responses[i] = _get_top_x_percent(item.get('x'), item.get('type'), item.get('type_id'))
+    return responses
 
 def _get_top_x(x, _type, _id):
     averages = _retrieve_averages(_type, _id)
