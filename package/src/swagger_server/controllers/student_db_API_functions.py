@@ -11,6 +11,7 @@ from .querying_functions import _get_top_x, _get_top_x_percent, _query_bulk
 #                                _course_delete_requisite,
 #                                _degree_average_update, _delete_child,
 #                                _update_metadata_component)
+from .verify_functions import _verify_degree
 
 
 @requires_auth
@@ -269,3 +270,8 @@ def faculty_get_degrees(id, meta_flag):
 # @requires_scope('admin', 'registree')
 # def faculty_delete_degree(body):
 #     _delete_child(body.get('faculty_id'), body.get('degree_id'), 'degree', ADMIN)
+
+@requires_auth
+@requires_scope('verifier')
+def verify_degree(student, degree, session):
+    return {'session': session, 'completed': _verify_degree('./data/sb-data.csv', student, degree)}
