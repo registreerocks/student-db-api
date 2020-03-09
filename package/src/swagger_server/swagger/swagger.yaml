@@ -402,6 +402,35 @@ paths:
   #       description: Degree and course id to delete course from degree 
   #       required: true
 
+  /degree/verify:
+    get:
+      tags:
+        - degree
+      summary: verify degree completion
+      description: ''
+      operationId:  swagger_server.controllers.student_db_API_functions.verify_degree
+      parameters:
+        - in: query
+          name: student
+          description: ID number of student
+          schema:
+            type: string
+        - in: query
+          name: degree
+          description: degree code
+          schema:
+            type: string
+        - in: query
+          name: session
+          description: session ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Authentication error
+
   /course/get_all:
     get:
       tags:

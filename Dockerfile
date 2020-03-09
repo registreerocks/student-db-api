@@ -6,8 +6,7 @@ RUN  apt-get update -y && \
 # API
 RUN mkdir -p /usr/src/package
 COPY ./package /usr/src/package
-WORKDIR /usr/src/package
-RUN pip install -e .
+RUN pip install -e /usr/src/package
 
 # Deployment
 RUN apt-get install supervisor -y
