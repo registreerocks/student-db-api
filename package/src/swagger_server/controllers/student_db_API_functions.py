@@ -13,6 +13,7 @@ from .querying_functions import _get_top_x, _get_top_x_percent, _query_bulk
 #                                _update_metadata_component)
 from .verify_functions import _verify_degree
 
+VERIFY_FILE = env.get("VERIFY_FILE")
 
 @requires_auth
 @requires_scope('admin')
@@ -274,4 +275,4 @@ def faculty_get_degrees(id, meta_flag):
 @requires_auth
 @requires_scope('verifier')
 def verify_degree(student, degree, session):
-    return {'session': session, 'completed': _verify_degree('./data/sb-data.csv', student, degree)}
+    return {'session': session, 'completed': _verify_degree(VERIFY_FILE, student, degree)}
