@@ -9,7 +9,6 @@ def _query_bulk(query_list):
             responses[item.get('type_id')] = _get_top_x(item.get('x'), item.get('type'), item.get('type_id'))
         else:
             responses[item.get('type_id')] = _get_top_x_percent(item.get('x'), item.get('type'), item.get('type_id'))
-    print(responses)
     return responses
 
 def _get_top_x(x, _type, _id):
