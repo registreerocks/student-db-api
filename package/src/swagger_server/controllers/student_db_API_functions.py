@@ -1,5 +1,3 @@
-from os import environ as env
-
 from registree_auth import requires_auth, requires_scope
 
 from .creation_functions import _component_weighting_equal_one, _create
@@ -13,8 +11,6 @@ from .querying_functions import _get_top_x, _get_top_x_percent, _query_bulk
 #                                _degree_average_update, _delete_child,
 #                                _update_metadata_component)
 from .verify_functions import _verify_degree
-
-VERIFY_FILE = env.get("VERIFY_FILE")
 
 @requires_auth
 @requires_scope('admin')
@@ -276,4 +272,4 @@ def faculty_get_degrees(id, meta_flag):
 @requires_auth
 @requires_scope('verifier')
 def verify_degree(student, degree, session):
-    return {'session': session, 'completed': _verify_degree(VERIFY_FILE, student, degree)}
+    return {'session': session, 'completed': _verify_degree(student, degree)}

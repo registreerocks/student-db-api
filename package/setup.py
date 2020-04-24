@@ -15,6 +15,7 @@ setup(
       'connexion[swagger-ui]', 
       'pymongo', 
       'flask_cors',
+      'mysql-connector',
       'registree-auth @ git+git://github.com/registreerocks/registree-auth.git'
    ],
    test_require=[
