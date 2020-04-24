@@ -1,6 +1,7 @@
 connexion[swagger-ui]
 pymongo
 flask_cors
+mysql-connector
 pytest
 mock
 git+git://github.com/registreerocks/registree-auth.git
