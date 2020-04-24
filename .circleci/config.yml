@@ -9,7 +9,7 @@ jobs:
       - run:
           name: Setup VirtualEnv
           command: |
-            echo 'export TAG=$(echo $CIRCLE_SHA1 | cut -c -7)' >> $BASH_ENV
+            echo 'export TAG=sb-$(echo $CIRCLE_SHA1 | cut -c -7)' >> $BASH_ENV
             echo 'export IMAGE_NAME=student-db-api' >> $BASH_ENV 
             python -m venv venv
             . venv/bin/activate
