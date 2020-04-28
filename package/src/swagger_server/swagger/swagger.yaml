@@ -873,6 +873,25 @@ paths:
         description: list of query details
         required: true
 
+  /query/bulk_new:
+    post:
+      tags:
+        - query
+      summary: 'returns query results for a list of query details'
+      operationId:  swagger_server.controllers.student_db_API_functions.query_bulk_new
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Authentication error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryBulk'
+        description: list of query details
+        required: true
+
   /query/course/top_x:
     get:
       tags:

@@ -11,6 +11,17 @@ def _query_bulk(query_list):
             responses[item.get('type_id')] = _get_top_x_percent(item.get('x'), item.get('type'), item.get('type_id'))
     return responses
 
+def _query_bulk_new(query_list):
+    responses = {}
+    for item in query_list:
+        if item.get('absolute'):
+            responses[item.get('type_id')] = _mongo_query(item.get('type'), item.get('type_id'), item.get('x'))
+        else:
+            total = _mongo_dry_run(item.get('type'), item.get('type_id'))
+            n = math.ceil(item.get('x')/100 * total)
+            responses[item.get('type_id')] = _mongo_query(item.get('type'), item.get('type_id'), n)
+    return responses
+
 def _get_top_x(x, _type, _id):
     averages = _retrieve_averages(_type, _id)
     if x < len(averages):
@@ -43,3 +54,138 @@ def _sort_averages(files):
 def _x_percent(x, sorted_averages):
     y = math.ceil(x/100 * len(sorted_averages))
     return sorted_averages[:y]
+
+def _mongo_query(_type, _id, n):
+  return list(MDBC.aggregate([
+    {
+      "$match": {
+        "asset.data.asset_type": _type + "_average",
+        "asset.data.degree_id": _id
+      }
+    },
+    {
+      "$group": {
+        "_id": "$asset.data.student_address",
+        "max_term": {
+          "$max": "$asset.data.term"
+        },
+        "data": {
+          "$push": {
+            "student_address": "$asset.data.student_address",
+            "term": "$asset.data.term",
+            "avg": "$metadata.avg",
+            "complete": "$metadata.complete",
+            "timestamp": "$metadata.timestamp",
+          }
+        }
+      }
+    },
+    {
+      "$project": {
+        "_id": 0,
+        "lastYear": {
+          "$setDifference": [{
+              "$map": {
+                "input": "$data",
+                "as": "data",
+                "in": {
+                  "$cond": [{
+                      "$eq": ["$max_term", "$$data.term"]
+                    },
+                    "$$data",
+                    False
+                  ]
+                }
+              }
+            },
+            [False]
+          ]
+        }
+      }
+    },
+    {
+      "$unwind": '$lastYear'
+    },
+    {
+      "$project": {
+        "student_address": "$lastYear.student_address",
+        "term": "$lastYear.term",
+        "avg": "$lastYear.avg",
+        "complete": "$lastYear.complete",
+        "timestamp": "$lastYear.timestamp"
+      }
+    },
+    {
+      "$sort": {
+        "avg": -1
+      }
+    },
+    {
+      "$limit": n
+    }
+  ]))
+
+def _mongo_dry_run(_type, _id):
+    return list(MDBC.aggregate([
+        {
+            "$match": {
+                "asset.data.asset_type": _type + "_average",
+                "asset.data.degree_id": _id
+            }
+        },
+        {
+            "$group": {
+                "_id": "$asset.data.student_address",
+                "max_term": {
+                "$max": "$asset.data.term"
+                },
+                "data": {
+                "$push": {
+                    "student_address": "$asset.data.student_address",
+                    "term": "$asset.data.term",
+                    "avg": "$metadata.avg",
+                    "complete": "$metadata.complete",
+                    "timestamp": "$metadata.timestamp",
+                }
+                }
+            }
+            },
+            {
+            "$project": {
+                "_id": 0,
+                "lastYear": {
+                "$setDifference": [{
+                    "$map": {
+                        "input": "$data",
+                        "as": "data",
+                        "in": {
+                        "$cond": [{
+                            "$eq": ["$max_term", "$$data.term"]
+                            },
+                            "$$data",
+                            False
+                        ]
+                        }
+                    }
+                    },
+                    [False]
+                ]
+                }
+            }
+            },
+            {
+            "$unwind": '$lastYear'
+            },
+            {
+            "$project": {
+                "student_address": "$lastYear.student_address",
+                "term": "$lastYear.term",
+                "avg": "$lastYear.avg",
+                "complete": "$lastYear.complete",
+                "timestamp": "$lastYear.timestamp"
+            }
+        },
+        {
+            "$count": "total"
+        } 
+    ]))[0]['total']
