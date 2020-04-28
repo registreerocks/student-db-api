@@ -90,7 +90,7 @@ jobs:
           name: Setup VirtualEnv
           command: |
             echo 'export TAG=$CIRCLE_TAG' >> $BASH_ENV
-            echo 'export IMAGE_NAME=customer-db-api' >> $BASH_ENV 
+            echo 'export IMAGE_NAME=student-db-api' >> $BASH_ENV 
             python -m venv venv
             . venv/bin/activate
             pip install --no-cache-dir -r requirements.txt
