@@ -1,0 +1,6 @@
+connexion[swagger-ui]
+pymongo
+flask_cors
+pytest
+mock
+git+git://github.com/registreerocks/registree-auth.git

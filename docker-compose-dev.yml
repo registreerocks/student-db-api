@@ -7,12 +7,8 @@ services:
       dockerfile: Dockerfile_dev
     ports:
       - "8000:5000"
-    environment:
-      AUTH0_DOMAIN: "registree.eu.auth0.com"
-      API_IDENTIFIER: "https://registree.rocks/apis"
-      ALGORITHMS: "['RS256']"
-      UPORT_ISSUER: "2ow5YgWEjhL1MGjk1Ze1z5znfrNnW3EjWtC"
-      UPORT_VALIDATION_URL: "http://178.62.244.76:8080/validateJWT"
+    env_file:
+      - api.env
     depends_on:
       - mongodb
     networks:
@@ -23,6 +19,8 @@ services:
     command: mongod
     ports:
       - 27017:27017
+    env_file:
+      - mongo.env
     networks:
       - backbone
 

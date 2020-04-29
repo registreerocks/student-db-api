@@ -4,23 +4,24 @@ from .global_vars import MDBC
 
 def _query_bulk(query_list):
     responses = {}
-    for i, item in enumerate(query_list):
+    for item in query_list:
         if item.get('absolute'):
-            responses[i] = _get_top_x(item.get('x'), item.get('type'), item.get('type_id'))
+            responses[item.get('type_id')] = _get_top_x(item.get('x'), item.get('type'), item.get('type_id'))
         else:
-            responses[i] = _get_top_x_percent(item.get('x'), item.get('type'), item.get('type_id'))
+            responses[item.get('type_id')] = _get_top_x_percent(item.get('x'), item.get('type'), item.get('type_id'))
     return responses
 
 def _get_top_x(x, _type, _id):
     averages = _retrieve_averages(_type, _id)
     if x < len(averages):
-        return averages[:x]
+        return dict((item.pop('student_address'), item.copy()) for item in averages[:x])
     else:
-        return averages
+        return dict((item.pop('student_address'), item.copy()) for item in averages)
 
 def _get_top_x_percent(x, _type, _id):
     averages = _retrieve_averages(_type, _id)
-    return _x_percent(x, averages)
+    reduced_list = _x_percent(x, averages)
+    return dict((item.pop('student_address'), item.copy()) for item in reduced_list)
 
 def _retrieve_averages(_type, _id):
     files = list(MDBC.find({'asset.data.asset_type': _type + '_average', 'asset.data.' + _type + '_id': _id}))
