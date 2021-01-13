@@ -5,6 +5,8 @@ from .getter_functions import (  # _get_course_marks_by_lecturer,
     _get_asset_by_id, _get_assets_by_key, _get_assets_by_type, _get_children,
     _get_marks_by_student)
 from .querying_functions import _get_top_x, _get_top_x_percent, _query_bulk
+from .health import _health_check
+
 
 # from .update_functions import (_append_children, _course_add_requisite,
 #                                _course_average_update,
@@ -269,3 +271,6 @@ def faculty_get_degrees(id, meta_flag):
 # @requires_scope('admin', 'registree')
 # def faculty_delete_degree(body):
 #     _delete_child(body.get('faculty_id'), body.get('degree_id'), 'degree', ADMIN)
+
+def health_check():
+    return _health_check()

@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
    name='student-db-api',
-   version='1.2.1',
+   version='1.3.0',
    maintainer='Sabine Bertram',
    maintainer_email='sabine.bertram@mailbox.org',
    package_dir={'': 'src'},
